@@ -15,4 +15,6 @@
 
 class Restaurant < ApplicationRecord
   has_many :reviews
+
+  scope :sorted, lambda { order("name ASC") }
 end
