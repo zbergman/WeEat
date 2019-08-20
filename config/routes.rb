@@ -1,14 +1,27 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  resources :reviews do
-    member {
-      get :delete
-    }
-  end
-
+  #### Restaurants ####
   resources :restaurants do
     member {
       get :delete
     }
   end
+
+  #### Reviews ####
+  REVIEWS_ROUTE = 'restaurants/:restaurant_id/reviews'
+  #Create
+  get REVIEWS_ROUTE + '/new', to: 'reviews#new'
+  match REVIEWS_ROUTE, to: 'reviews#create', via: [:post]
+
+  # Read
+  get REVIEWS_ROUTE, to: 'reviews#index'
+  get REVIEWS_ROUTE + '/:id', to: 'reviews#show'
+
+  #Update
+  get REVIEWS_ROUTE + '/:id/edit', to: 'reviews#edit'
+  match REVIEWS_ROUTE + '/:id/update', to: 'reviews#update', via: [:patch, :put]
+
+  #Delete
+  get REVIEWS_ROUTE + '/:id/delete', to: 'reviews#delete'
+  match REVIEWS_ROUTE + '/:id/destroy', to: 'reviews#destroy', via: [:delete]
+
 end

@@ -13,4 +13,6 @@
 
 class Review < ApplicationRecord
   belongs_to :restaurant
+
+  scope :sorted, lambda { order(created_at: :desc) }
 end
