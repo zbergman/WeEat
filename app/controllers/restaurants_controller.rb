@@ -2,23 +2,23 @@ class RestaurantsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    Restaurant.sorted
+    render :json => { :restaurants => Restaurant.all }
   end
 
   def show
-    Restaurant.find(params[:id])
+    render :json => { :restaurant => Restaurant.find(params[:id]) }
   end
 
   def new
-    Restaurant.new
+    render :json => { :restaurant => Restaurant.new }
   end
 
   def create
-    Restaurant.create(restaurants_params)
+    render :json => { :restaurant => Restaurant.create(restaurants_params) }
   end
 
   def edit
-    Restaurant.find(params[:id])
+    render :json => { :restaurant => Restaurant.find(params[:id]) }
   end
 
   def update
@@ -30,7 +30,7 @@ class RestaurantsController < ApplicationController
   end
 
   def delete
-    Restaurant.find(params[:id])
+    render :json => { :restaurant => Restaurant.find(params[:id]) }
   end
 
   def destroy

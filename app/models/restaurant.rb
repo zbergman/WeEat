@@ -17,6 +17,8 @@ class Restaurant < ApplicationRecord
   # Associations
   has_many :reviews
 
+  after_initialize :calc_rating
+
   # Scopes
   scope :sorted, lambda { order("name ASC") }
 
@@ -34,4 +36,10 @@ class Restaurant < ApplicationRecord
             :length => {:maximum => 60}
   validates :max_delivery_time_in_minutes,
             :numericality => {:greater_than_or_equal_to => 0}
+
+  private
+  def calc_rating
+    reviews = self.reviews
+    self.rating = !reviews.empty? ? (reviews.map{|r| r.rating}.inject{ |sum, e| sum += e } / reviews.size) : 0
+  end
 end

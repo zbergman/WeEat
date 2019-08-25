@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 2019_08_19_121633) do
   create_table "restaurants", force: :cascade do |t|
     t.string "name", limit: 40
     t.string "cuisine", limit: 20
-    t.float "rating"
-    t.boolean "is_10_bis"
+    t.float "rating", default: 0.0
+    t.boolean "is_10_bis", default: false
     t.string "address", limit: 60
     t.integer "max_delivery_time_in_minutes"
     t.datetime "created_at", null: false
