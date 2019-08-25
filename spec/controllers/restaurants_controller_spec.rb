@@ -92,7 +92,7 @@ RSpec.describe RestaurantsController, type: :controller do
       it "delete restaurant" do
         get(:index)
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)["restaurants"]).to eq([YAML.load(@restaurant_one.to_json), YAML.load(@restaurant_two.to_json)])
+        expect(JSON.parse(response.body)["restaurants"]).to match([YAML.load(@restaurant_one.to_json), YAML.load(@restaurant_two.to_json)])
 
         delete(:destroy, params: {:id => @restaurant_one[:id]})
 

@@ -6,4 +6,10 @@ FactoryBot.define do
     max_delivery_time_in_minutes { Faker::Number.between(from: 10, to: 100) }
     is_10_bis { Faker::Boolean.boolean}
   end
+
+  factory :review, class: Review do
+    text { Faker::Restaurant.review}
+    reviewer_name { Faker::Name.name }
+    rating { Faker::Number.between(from: 0, to: 5) }
+  end
 end

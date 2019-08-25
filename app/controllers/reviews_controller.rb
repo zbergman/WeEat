@@ -2,23 +2,23 @@ class ReviewsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    Review.sorted
+    render :json => {:reviews => Review.all }
   end
 
   def show
-    Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id])
+    render :json => { :review => Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id]) }
   end
 
   def new
-    Review.new
+    render :json => { :review => Review.new }
   end
 
   def create
-    Review.create(reviews_params)
+    render :json => { :review => Review.create(reviews_params) }
   end
 
   def edit
-    Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id])
+    render :json => { :review => Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id]) }
   end
 
   def update
@@ -30,7 +30,7 @@ class ReviewsController < ApplicationController
   end
 
   def delete
-    Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id])
+    render :json => { :review => Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id]) }
   end
 
   def destroy
