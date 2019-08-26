@@ -3,6 +3,6 @@ class RestaurantSerializer < ActiveModel::Serializer
   has_many :reviews
 
   def rating
-    self.object.reviews.empty? ? 0 : (self.object.reviews.map{|r| r.rating}.inject{ |sum, e| sum += e } / self.object.reviews.size)
+    self.object.calc_rating
   end
 end

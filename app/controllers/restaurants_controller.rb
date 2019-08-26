@@ -1,12 +1,13 @@
 class RestaurantsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
 
   def index
     render json: { restaurants: Restaurant.sorted_by_name.map{|r| RestaurantSerializer.new(r)} }
   end
 
   def show
-    render json: { restaurant: RestaurantSerializer.new(find_restaurant(params[:id])) }
+    render json: { restaurant: RestaurantSerializer.new(@restaurant) }
   end
 
   def new
@@ -18,17 +19,18 @@ class RestaurantsController < ApplicationController
   end
 
   def edit
-    render json: { restaurant: RestaurantSerializer.new(find_restaurant(params[:id])) }
+    render json: { restaurant: RestaurantSerializer.new(@restaurant) }
   end
 
   def update
-    restaurant = find_restaurant(params[:id])
-    restaurant.update_attributes(restaurants_params) if restaurant
+    @restaurant.update_attributes(restaurants_params) if @restaurant
   end
 
   def destroy
-    restaurant = find_restaurant(params[:id])
-    restaurant.destroy if restaurant
+    if @restaurant
+      @restaurant.reviews.each{|review| review.destroy }
+      @restaurant.destroy
+    end
   end
 
   private
@@ -36,7 +38,7 @@ class RestaurantsController < ApplicationController
     params.require(:restaurant).permit(:name, :cuisine, :is_10_bis, :address, :max_delivery_time_in_minutes)
   end
 
-  def find_restaurant(id)
-    Restaurant.find(id)
+  def set_restaurant
+    @restaurant = Restaurant.find(params[:id])
   end
 end

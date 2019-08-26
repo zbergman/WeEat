@@ -19,8 +19,6 @@ class Restaurant < ApplicationRecord
   # Associations
   has_many :reviews
 
-  # after_initialize :calc_rating
-
   # Scopes
   scope :sorted_by_name, lambda { order("name ASC") }
 
@@ -43,9 +41,7 @@ class Restaurant < ApplicationRecord
   #   r
   # end
 
-  private
   def calc_rating
-    reviews = self.reviews
     reviews.empty? ? 0 : (reviews.map{|r| r.rating}.inject{ |sum, e| sum += e } / reviews.size)
   end
 end
