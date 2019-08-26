@@ -13,20 +13,20 @@
 
 class Review < ApplicationRecord
   # Associations
-  belongs_to :restaurant
+  belongs_to :restaurant, foreign_key: :restaurant_id
 
   # Scopes
-  scope :sorted, lambda { order(created_at: :desc) }
+  scope :sorted_by_created_at, lambda { order(created_at: :desc) }
 
   # Validations
   validates :text,
-            :presence => true
+            presence: true
   validates :reviewer_name,
-            :presence => true,
-            :length => {:maximum => 40}
+            presence: true,
+            length: {maximum: 40}
   validates :rating,
-            :presence => true,
-            :numericality => {:less_than_or_equal_to => 5, :greater_than_or_equal_to => 0}
+            presence: true,
+            numericality: {less_than_or_equal_to: 5, greater_than_or_equal_to: 0}
   validates :restaurant_id,
-            :presence => true
+            presence: true
 end

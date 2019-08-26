@@ -2,49 +2,43 @@ class ReviewsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    render :json => {:reviews => Review.all }
+    render json: { reviews: Review.sorted_by_created_at.map{ |review| ReviewSerializer.new(review)} }
   end
 
   def show
-    render :json => { :review => Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id]) }
+    render json: { review: ReviewSerializer.new(find_review(params[:id], params[:restaurant_id])) }
   end
 
   def new
-    render :json => { :review => Review.new }
+    render json: { review: ReviewSerializer.new(Review.new(restaurant_id: params[:restaurant_id])) }
   end
 
   def create
-    render :json => { :review => Review.create(reviews_params) }
+    render json: { review: ReviewSerializer.new(Review.new(Review.create(reviews_params))) }
   end
 
   def edit
-    render :json => { :review => Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id]) }
+    render json: { review: ReviewSerializer.new(find_review(params[:id], params[:restaurant_id])) }
   end
 
   def update
-    review = Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id])
-
-    if review
-      review.update_attributes(reviews_params)
-    end
-  end
-
-  def delete
-    render :json => { :review => Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id]) }
+    review = find_review(params[:id], params[:restaurant_id])
+    review.update_attributes(reviews_params) if review
   end
 
   def destroy
-    review = Review.where(:restaurant_id => params[:restaurant_id]).find(params[:id])
-
-    if review
-      review.destroy
-    end
+    review = find_review(params[:id], params[:restaurant_id])
+    review.destroy if review
   end
 
   private
   def reviews_params
     review = params.require(:review).permit(:text, :reviewer_name, :rating)
     review[:restaurant_id] = params[:restaurant_id]
-    return review
+    review
+  end
+
+  def find_review(id, restaurant_id)
+    Review.where(restaurant_id: restaurant_id).find(id)
   end
 end

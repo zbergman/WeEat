@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
   #### Restaurants ####
-  resources :restaurants do
-    member {
-      get :delete
-    }
-  end
+  resources :restaurants
 
   #### Reviews ####
   REVIEWS_ROUTE = 'restaurants/:restaurant_id/reviews'
@@ -21,7 +17,6 @@ Rails.application.routes.draw do
   match REVIEWS_ROUTE + '/:id/update', to: 'reviews#update', via: [:patch, :put]
 
   #Delete
-  get REVIEWS_ROUTE + '/:id/delete', to: 'reviews#delete'
   match REVIEWS_ROUTE + '/:id/destroy', to: 'reviews#destroy', via: [:delete]
 
 end
