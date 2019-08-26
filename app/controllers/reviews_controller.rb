@@ -14,7 +14,7 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    render json: { review: ReviewSerializer.new(Review.new(Review.create(reviews_params))) }
+    render json: { review: ReviewSerializer.new(Review.create(reviews_params)) }
   end
 
   def edit

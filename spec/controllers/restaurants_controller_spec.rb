@@ -27,7 +27,7 @@ RSpec.describe RestaurantsController, type: :controller do
 
       it "checking show" do
         get(:show, params: {:id => restaurant[:id]})
-        expect(JSON.parse(response.body)["restaurant"]).to eq(YAML.load(restaurant.to_json))
+        expect(JSON.parse(response.body)["restaurant"]).to eq(YAML.load(RestaurantSerializer.new(restaurant).to_json))
       end
     end
 
@@ -92,12 +92,12 @@ RSpec.describe RestaurantsController, type: :controller do
       it "delete restaurant" do
         get(:index)
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)["restaurants"]).to match([YAML.load(@restaurant_one.to_json), YAML.load(@restaurant_two.to_json)])
+        expect(JSON.parse(response.body)["restaurants"]).to match_array([YAML.load(RestaurantSerializer.new(@restaurant_one).to_json), YAML.load(RestaurantSerializer.new(@restaurant_two).to_json)])
 
         delete(:destroy, params: {:id => @restaurant_one[:id]})
 
         get(:index)
-        expect(JSON.parse(response.body)["restaurants"]).to eq([YAML.load(@restaurant_two.to_json)])
+        expect(JSON.parse(response.body)["restaurants"]).to eq([YAML.load(RestaurantSerializer.new(@restaurant_two).to_json)])
       end
     end
   end

@@ -11,7 +11,7 @@ RSpec.describe Restaurant, type: :model do
     end
 
     it "check sorted scope" do
-      expect(Restaurant.sorted).to match(restaurants)
+      expect(Restaurant.sorted_by_name).to match(restaurants)
     end
   end
 end

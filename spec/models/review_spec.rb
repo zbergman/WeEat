@@ -12,7 +12,7 @@ RSpec.describe Review, type: :model do
     end
 
     it "check sorted scope" do
-      expect(Review.sorted).to match(reviews)
+      expect(Review.sorted_by_created_at).to match(reviews)
     end
   end
 end

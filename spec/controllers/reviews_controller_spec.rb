@@ -36,7 +36,7 @@ RSpec.describe ReviewsController, type: :controller do
 
       it "checking show" do
         get(:show, params: {id: review[:id], restaurant_id: restaurant[:id]})
-        expect(JSON.parse(response.body)["review"]).to eq(YAML.load(review.to_json))
+        expect(JSON.parse(response.body)["review"]).to eq(YAML.load(ReviewSerializer.new(review).to_json))
       end
     end
 
@@ -53,11 +53,11 @@ RSpec.describe ReviewsController, type: :controller do
         expect(JSON.parse(response.body)["review"]["text"]).to eq("Nice place")
       end
 
-      it "checking cuisine" do
+      it "checking reviewer_name" do
         expect(JSON.parse(response.body)["review"]["reviewer_name"]).to eq("Zohar")
       end
 
-      it "checking address" do
+      it "checking rating" do
         expect(JSON.parse(response.body)["review"]["rating"]).to eq(4)
       end
 
@@ -117,12 +117,12 @@ RSpec.describe ReviewsController, type: :controller do
       it "delete restaurant" do
         get(:index, params: { restaurant_id: restaurant.id })
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)["reviews"]).to match([YAML.load(@review_one.to_json), YAML.load(@review_two.to_json)])
+        expect(JSON.parse(response.body)["reviews"]).to match_array([YAML.load(ReviewSerializer.new(@review_one).to_json), YAML.load(ReviewSerializer.new(@review_two).to_json)])
 
         delete(:destroy, params: {:id => @review_one[:id], restaurant_id: restaurant[:id]})
 
         get(:index, params: { restaurant_id: restaurant.id })
-        expect(JSON.parse(response.body)["reviews"]).to eq([YAML.load(@review_two.to_json)])
+        expect(JSON.parse(response.body)["reviews"]).to eq([YAML.load(ReviewSerializer.new(@review_two).to_json)])
       end
     end
   end
