@@ -41,9 +41,7 @@ class Restaurant < ApplicationRecord
   #   r
   # end
 
-  private
   def calc_rating
-    reviews = self.reviews
     reviews.empty? ? 0 : (reviews.map{|r| r.rating}.inject{ |sum, e| sum += e } / reviews.size)
   end
 end

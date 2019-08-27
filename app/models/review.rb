@@ -26,7 +26,7 @@ class Review < ApplicationRecord
             length: {maximum: 40}
   validates :rating,
             presence: true,
-            numericality: {less_than_or_equal_to: 5, greater_than_or_equal_to: 0}
+            numericality: {less_than_or_equal_to: 5, greater_than_or_equal_to: 1}
   validates :restaurant_id,
             presence: true
 end
