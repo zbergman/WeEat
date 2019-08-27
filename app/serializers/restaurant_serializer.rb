@@ -1,5 +1,5 @@
 class RestaurantSerializer < ActiveModel::Serializer
-  attributes :id, :name, :cuisine, :is_10_bis, :address, :max_delivery_time_in_minutes, :rating
+  attributes :id, :name, :cuisine, :is_10_bis, :rating, :address, :max_delivery_time_in_minutes
   has_many :reviews
 
   def rating
