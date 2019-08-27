@@ -1,12 +1,13 @@
 class ReviewsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :set_review, only: [:show, :edit, :update, :destroy]
 
   def index
-    render json: { reviews: Review.sorted_by_created_at.map{ |review| ReviewSerializer.new(review)} }
+    render json: {reviews: ActiveModel::SerializableResource.new(Review.sorted_by_created_at, each_serializer: ReviewSerializer) }
   end
 
   def show
-    render json: { review: ReviewSerializer.new(find_review(params[:id], params[:restaurant_id])) }
+    render json: { review: ReviewSerializer.new(@review) }
   end
 
   def new
@@ -18,17 +19,15 @@ class ReviewsController < ApplicationController
   end
 
   def edit
-    render json: { review: ReviewSerializer.new(find_review(params[:id], params[:restaurant_id])) }
+    render json: { review: ReviewSerializer.new(@review) }
   end
 
   def update
-    review = find_review(params[:id], params[:restaurant_id])
-    review.update_attributes(reviews_params) if review
+    @review.update_attributes(reviews_params) if @review
   end
 
   def destroy
-    review = find_review(params[:id], params[:restaurant_id])
-    review.destroy if review
+    @review.destroy if @review
   end
 
   private
@@ -38,7 +37,7 @@ class ReviewsController < ApplicationController
     review
   end
 
-  def find_review(id, restaurant_id)
-    Review.where(restaurant_id: restaurant_id).find(id)
+  def set_review
+    @review = Review.where(restaurant_id: params[:restaurant_id]).find(params[:id])
   end
 end
