@@ -10,6 +10,6 @@ FactoryBot.define do
   factory :review, class: Review do
     text { Faker::Restaurant.review}
     reviewer_name { Faker::Name.name }
-    rating { Faker::Number.between(from: 0, to: 5) }
+    rating { Faker::Number.between(from: 1, to: 5) }
   end
 end
