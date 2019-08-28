@@ -27,10 +27,7 @@ class RestaurantsController < ApplicationController
   end
 
   def destroy
-    if @restaurant
-      @restaurant.reviews.each{|review| review.destroy }
-      @restaurant.destroy
-    end
+    @restaurant.destroy if @restaurant
   end
 
   private

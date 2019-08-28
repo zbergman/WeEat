@@ -17,7 +17,7 @@ class Restaurant < ApplicationRecord
   attr_accessor :rating
 
   # Associations
-  has_many :reviews
+  has_many :reviews, dependent: :destroy
 
   # Scopes
   scope :sorted_by_name, lambda { order("name ASC") }
