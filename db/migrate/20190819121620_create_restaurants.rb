@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class CreateRestaurants < ActiveRecord::Migration[5.2]
   def up
     create_table :restaurants do |t|
-      t.column "name", :string, limit: 40
-      t.column "cuisine", :string, limit: 20
-      t.column "is_10_bis", :boolean
-      t.column "address", :string, limit: 60
-      t.column "max_delivery_time_in_minutes", :integer
+      t.string 'name', limit: 40
+      t.string 'cuisine', limit: 20
+      t.boolean 'is_10_bis'
+      t.string 'address', limit: 60
+      t.integer 'max_delivery_time_in_minutes'
       t.timestamps
     end
   end

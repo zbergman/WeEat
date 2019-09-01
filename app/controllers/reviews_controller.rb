@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class ReviewsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  before_action :set_review, only: [:show, :edit, :update, :destroy]
+  before_action :set_review, only: %i[show edit update destroy]
 
   def index
-    render json: {reviews: ActiveModel::SerializableResource.new(Review.sorted_by_created_at, each_serializer: ReviewSerializer) }
+    serialized_reviews = ActiveModel::SerializableResource.new(Review.sorted_by_created_at, each_serializer: ReviewSerializer)
+    render json: { reviews: serialized_reviews }
   end
 
   def show
@@ -23,14 +25,15 @@ class ReviewsController < ApplicationController
   end
 
   def update
-    @review.update_attributes(reviews_params) if @review
+    @review.update_attributes(reviews_params)
   end
 
   def destroy
-    @review.destroy if @review
+    @review.destroy
   end
 
   private
+
   def reviews_params
     review = params.require(:review).permit(:text, :reviewer_name, :rating)
     review[:restaurant_id] = params[:restaurant_id]
