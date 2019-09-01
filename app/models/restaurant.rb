@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: restaurants
@@ -20,28 +22,22 @@ class Restaurant < ApplicationRecord
   has_many :reviews, dependent: :destroy
 
   # Scopes
-  scope :sorted_by_name, lambda { order("name ASC") }
+  scope :sorted_by_name, -> { order('name ASC') }
 
   # Validations
   validates :name,
             presence: true,
-            length: {maximum: 40}
+            length: { maximum: 40 }
   validates :cuisine,
             presence: true,
-            length: {maximum: 20}
+            length: { maximum: 20 }
   validates :address,
             presence: true,
-            length: {maximum: 60}
+            length: { maximum: 60 }
   validates :max_delivery_time_in_minutes,
-            numericality: {greater_than_or_equal_to: 0}
-
-  # def as_json(options = { })
-  #   r = super(options)
-  #   r[:rating] = calc_rating
-  #   r
-  # end
+            numericality: { greater_than_or_equal_to: 0 }
 
   def calc_rating
-    reviews.empty? ? 0 : (reviews.map{|r| r.rating}.inject{ |sum, e| sum += e } / reviews.size)
+    reviews.empty? ? 0 : (reviews.map(&:rating).inject { |sum, e| sum += e } / reviews.size)
   end
 end

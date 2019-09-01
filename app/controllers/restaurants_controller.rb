@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class RestaurantsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
+  before_action :set_restaurant, only: %i[show edit update destroy]
 
   def index
-    render json: {restaurants: ActiveModel::SerializableResource.new(Restaurant.sorted_by_name, each_serializer: RestaurantSerializer) }
+    serialized_restaurants = ActiveModel::SerializableResource.new(Restaurant.sorted_by_name, each_serializer: RestaurantSerializer)
+    render json: { restaurants: serialized_restaurants }
   end
 
   def show
@@ -23,14 +25,15 @@ class RestaurantsController < ApplicationController
   end
 
   def update
-    @restaurant.update_attributes(restaurants_params) if @restaurant
+    @restaurant.update_attributes(restaurants_params)
   end
 
   def destroy
-    @restaurant.destroy if @restaurant
+    @restaurant.destroy
   end
 
   private
+
   def restaurants_params
     params.require(:restaurant).permit(:name, :cuisine, :is_10_bis, :address, :max_delivery_time_in_minutes)
   end
