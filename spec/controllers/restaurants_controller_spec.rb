@@ -12,7 +12,7 @@ RSpec.describe RestaurantsController, type: :controller do
       end
 
       it "checking count" do
-        expect(JSON.parse(response.body)["restaurants"].size).to eq(2)
+        expect(JSON.parse(response.body).size).to eq(2)
       end
 
       it "checking creation status" do
@@ -27,7 +27,7 @@ RSpec.describe RestaurantsController, type: :controller do
 
       it "checking show" do
         get(:show, params: {:id => restaurant[:id]})
-        expect(JSON.parse(response.body)["restaurant"]).to eq(YAML.load(RestaurantSerializer.new(restaurant).to_json))
+        expect(JSON.parse(response.body)).to eq(YAML.load(RestaurantSerializer.new(restaurant).to_json))
       end
     end
 
@@ -37,19 +37,19 @@ RSpec.describe RestaurantsController, type: :controller do
       end
 
       it "checking name" do
-        expect(JSON.parse(response.body)["restaurant"]["name"]).to eq("Soho")
+        expect(JSON.parse(response.body)["name"]).to eq("Soho")
       end
 
       it "checking cuisine" do
-        expect(JSON.parse(response.body)["restaurant"]["cuisine"]).to eq("Asian")
+        expect(JSON.parse(response.body)["cuisine"]).to eq("Asian")
       end
 
       it "checking address" do
-        expect(JSON.parse(response.body)["restaurant"]["address"]).to eq("Rishon")
+        expect(JSON.parse(response.body)["address"]).to eq("Rishon")
       end
 
       it "checking max_delivery_time_in_minutes" do
-        expect(JSON.parse(response.body)["restaurant"]["max_delivery_time_in_minutes"]).to eq(80)
+        expect(JSON.parse(response.body)["max_delivery_time_in_minutes"]).to eq(80)
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe RestaurantsController, type: :controller do
 
       it "checking name" do
         get(:show, params: {:id => restaurant[:id]})
-        expect(JSON.parse(response.body)["restaurant"]["name"]).to eq("Zohar's")
+        expect(JSON.parse(response.body)["name"]).to eq("Zohar's")
       end
     end
 
@@ -79,7 +79,7 @@ RSpec.describe RestaurantsController, type: :controller do
 
       it "checking name" do
         get(:show, params: {:id => restaurant[:id]})
-        expect(JSON.parse(response.body)["restaurant"]["name"]).to eq("Zohar's")
+        expect(JSON.parse(response.body)["name"]).to eq("Zohar's")
       end
     end
 
@@ -92,12 +92,12 @@ RSpec.describe RestaurantsController, type: :controller do
       it "delete restaurant" do
         get(:index)
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)["restaurants"]).to match_array([YAML.load(RestaurantSerializer.new(@restaurant_one).to_json), YAML.load(RestaurantSerializer.new(@restaurant_two).to_json)])
+        expect(JSON.parse(response.body)).to match_array([YAML.load(RestaurantSerializer.new(@restaurant_one).to_json), YAML.load(RestaurantSerializer.new(@restaurant_two).to_json)])
 
         delete(:destroy, params: {:id => @restaurant_one[:id]})
 
         get(:index)
-        expect(JSON.parse(response.body)["restaurants"]).to eq([YAML.load(RestaurantSerializer.new(@restaurant_two).to_json)])
+        expect(JSON.parse(response.body)).to eq([YAML.load(RestaurantSerializer.new(@restaurant_two).to_json)])
       end
     end
   end
