@@ -16,7 +16,7 @@ RSpec.describe ReviewsController, type: :controller do
         get(:index, params: { restaurant_id: restaurant.id })
       end
 
-      it "checking count" do
+      it "checking that 2 reviews were created" do
         expect(JSON.parse(response.body).size).to eq(2)
       end
 
@@ -114,7 +114,7 @@ RSpec.describe ReviewsController, type: :controller do
         @review_two = FactoryBot.create(:review, restaurant_id: restaurant[:id])
       end
 
-      it "delete restaurant" do
+      it "delete review" do
         get(:index, params: { restaurant_id: restaurant.id })
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)).to match_array([YAML.load(ReviewSerializer.new(@review_one).to_json), YAML.load(ReviewSerializer.new(@review_two).to_json)])
@@ -123,6 +123,7 @@ RSpec.describe ReviewsController, type: :controller do
 
         get(:index, params: { restaurant_id: restaurant.id })
         expect(JSON.parse(response.body)).to eq([YAML.load(ReviewSerializer.new(@review_two).to_json)])
+        expect(JSON.parse(response.body).size).to eq(1)
       end
     end
   end

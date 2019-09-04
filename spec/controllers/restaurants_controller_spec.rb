@@ -11,7 +11,7 @@ RSpec.describe RestaurantsController, type: :controller do
         get(:index)
       end
 
-      it "checking count" do
+      it "checking that 2 restaurants were created" do
         expect(JSON.parse(response.body).size).to eq(2)
       end
 
@@ -98,6 +98,7 @@ RSpec.describe RestaurantsController, type: :controller do
 
         get(:index)
         expect(JSON.parse(response.body)).to eq([YAML.load(RestaurantSerializer.new(@restaurant_two).to_json)])
+        expect(JSON.parse(response.body).size).to eq(1)
       end
     end
   end
