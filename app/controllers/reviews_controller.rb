@@ -4,24 +4,23 @@ class ReviewsController < ApplicationController
   before_action :set_review, only: %i[show edit update destroy]
 
   def index
-    serialized_reviews = ActiveModel::SerializableResource.new(Review.sorted_by_created_at, each_serializer: ReviewSerializer)
-    render json: { reviews: serialized_reviews }
+    render json: Review.sorted_by_created_at, each_serializer: ReviewSerializer
   end
 
   def show
-    render json: { review: ReviewSerializer.new(@review) }
+    render json: @review, serializer: ReviewSerializer
   end
 
   def new
-    render json: { review: ReviewSerializer.new(Review.new(restaurant_id: params[:restaurant_id])) }
+    render json: Review.new(restaurant_id: params[:restaurant_id]), serializer: ReviewSerializer
   end
 
   def create
-    render json: { review: ReviewSerializer.new(Review.create(reviews_params)) }
+    render json: Review.create(reviews_params), serializer: ReviewSerializer
   end
 
   def edit
-    render json: { review: ReviewSerializer.new(@review) }
+    render json: @review, serializer: ReviewSerializer
   end
 
   def update
