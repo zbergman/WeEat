@@ -4,24 +4,23 @@ class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: %i[show edit update destroy]
 
   def index
-    serialized_restaurants = ActiveModel::SerializableResource.new(Restaurant.sorted_by_name, each_serializer: RestaurantSerializer)
-    render json: { restaurants: serialized_restaurants }
+    render json: Restaurant.sorted_by_name, each_serializer: RestaurantSerializer
   end
 
   def show
-    render json: { restaurant: RestaurantSerializer.new(@restaurant) }
+    render json: @restaurant, serializer: RestaurantSerializer
   end
 
   def new
-    render json: { restaurant: RestaurantSerializer.new(Restaurant.new) }
+    render json: Restaurant.new, serializer: RestaurantSerializer
   end
 
   def create
-    render json: { restaurant: RestaurantSerializer.new(Restaurant.create(restaurants_params)) }
+    render json: Restaurant.create(restaurants_params), serializer: RestaurantSerializer
   end
 
   def edit
-    render json: { restaurant: RestaurantSerializer.new(@restaurant) }
+    render json: RestaurantSerializer.new(@restaurant), serializer: RestaurantSerializer
   end
 
   def update
